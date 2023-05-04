@@ -1,29 +1,41 @@
-const { Schema, model, mongoose } = require('mongoose');
-const thoughtsSchema = require('./Thoughts');
+const {Schema, model, mongoose} = require('mongoose')
 
-// Schema to create User model
-const userSchema = new Schema(
-  {
-    username: {
-      type: String,
-      required: true,
-      max_length: 50,
-    },
-    email: {
-      type: String,
-      required: true,
-      unique: true,
 
+const userSchema = new mongoose.Schema(
+    {
+        username: {
+            type: String,
+            unique: true,
+            required: true,
+            trim: true,
+        },
+        email: {
+            type: String,
+            unique: true,
+            required: true,
+            // validation?
+        },
+        thoughts: [
+            {
+                 type: Schema.Types.ObjectId,
+                 ref: 'thoughts',
+            },
+          ],
+        friends: [
+            {
+                type: Schema.Types.ObjectId,
+                ref: '_id'
+            }
+        ],
     },
-    thoughts: [ thoughtsSchema ]
+    {
+        toJSON: {
+            virtuals: true,
+          },
     },
-  {
-    toJSON: {
-      getters: true,
-    },
-  }
+
 );
 
-const User = model('User', userSchema);
+const User = model('user', userSchema)
 
-module.exports = User;
+module.exports = User

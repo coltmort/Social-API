@@ -6,18 +6,18 @@ const {
   deleteUser,
   addThought,
   removeThought,
-} = require('../../controllers/thoughtsController');
+} = require('../../controllers/usersController');
 
 // /api/Users
-// router.route('/').get(getUsers).post(createUser);
+router.route('/').get(getUsers).post(createUser);
 
 // /api/Users/:UserId
-// router.route('/:userId').get(getSingleUser).delete(deleteUser);
+router.route('/:userId').get(getSingleUser).delete(deleteUser);
 
 // /api/Users/:UserId/Thoughts
-// router.route('/:userId/thoughts').post(addThought);
+router.route('/:userId/thoughts').post(addThought);
 
 // /api/Users/:UserId/Thoughts/:ThoughtId
-// router.route('/:userId/thoughts/:thoughtId').delete(removeThought);
+router.route('/:userId/thoughts/:thoughtId').delete(removeThought);
 
 module.exports = router;

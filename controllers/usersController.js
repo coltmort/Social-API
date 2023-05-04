@@ -4,26 +4,20 @@ const { Thought, User } = require('../models');
 
 module.exports = {
   // Get all users
-  async getusers(req, res) {
+  async getUsers(req, res) {
     try {
-      const users = await Thought.find();
-
-      const userObj = {
-        users,
-        headCount: await headCount(),
-      };
-
-      res.json(userObj);
+      const users = await User.find();
+console.log(users)
+      res.json(users);
     } catch (err) {
       console.log(err);
       return res.status(500).json(err);
     }
   },
   // Get a single user
-  async getSingleuser(req, res) {
+  async getSingleUser(req, res) {
     try {
-      const user = await Thought.findOne({ _id: req.params.userId })
-        .select('-__v');
+      const user = await User.findOne({ _id: req.params.userId })
 
       if (!user) {
         return res.status(404).json({ message: 'No user with that ID' })
@@ -31,7 +25,6 @@ module.exports = {
 
       res.json({
         user,
-        grade: await grade(req.params.userId),
       });
     } catch (err) {
       console.log(err);
@@ -78,13 +71,13 @@ module.exports = {
   // Add an thought to a user
   async addThought(req, res) {
     console.log('You are adding a thought');
-    console.log(req.body);
+    console.log(req.body.thought);
 
     try {
       const user = await User.findOneAndUpdate(
         { _id: req.params.userId },
-        { $addToSet: { thoughts: req.body } },
-        { runValidators: true, new: true }
+        { $addToSet: { thoughts: req.body.thought } },
+        // { runValidators: true, new: true }
       );
 
       if (!user) {
@@ -103,7 +96,7 @@ module.exports = {
     try {
       const thought = await Thought.findOneAndUpdate(
         { _id: req.params.thoughtId },
-        { $pull: { assignment: { assignmentId: req.params.assignmentId } } },
+        { $pull: { thought: { thoughtId: req.params.thoughtId } } },
         { runValidators: true, new: true }
       );
 
