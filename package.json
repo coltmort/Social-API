@@ -1,5 +1,5 @@
 {
-  "name": "social-api",
+  "name": "28-Stu_Mini-Project",
   "version": "1.0.1",
   "description": "Mongoose back-end project - Main",
   "main": "index.js",
@@ -11,23 +11,11 @@
     "heroku-postbuild": "node utils/seed.js"
   },
   "dependencies": {
+    "dayjs": "^1.11.7",
     "express": "^4.17.1",
     "mongoose": "^7.0.2"
   },
   "devDependencies": {
     "nodemon": "^2.0.9"
-  },
-  "repository": {
-    "type": "git",
-    "url": "git+ssh://git@github.com/coltmort/Social-API.git"
-  },
-  "keywords": [
-    "API",
-    "Social"
-  ],
-  "author": "Coltmort",
-  "bugs": {
-    "url": "https://github.com/coltmort/Social-API/issues"
-  },
-  "homepage": "https://github.com/coltmort/Social-API#readme"
+  }
 }
