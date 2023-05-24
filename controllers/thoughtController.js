@@ -9,7 +9,7 @@ module.exports = {
 
       res.json(thoughts);
     } catch (err) {
-      console.log(err);
+
       return res.status(500).json(err);
     }
   },
@@ -37,23 +37,25 @@ module.exports = {
   async createThought(req, res) {
     try {
       const thought = await Thought.create(req.body);
+      console.log(thought)
 
 
-        await User.findOneAndUpdate(
-            { _id: req.params.userId },
-            { $push: {thoughts: thought._id} },
-            { runValidators: true, new: true }
+        const user = await User.findOneAndUpdate(
+            { _id: req.body.userId },
+            { $addToSet: {thoughts: thought._id} },
+            { new: true }
           );
-
+console.log(user, 'user')
       res.json(thought);
     } catch (err) {
+      console.log(err)
       res.status(500).json(err);
     }
   },
    async updateThought(req, res) {
     try {
       const thought = await Thought.findOneAndUpdate(
-        {_id: req.params.userId },
+        {_id: req.params.thoughtId },
         { $set: req.body },
         { runValidators: true, new: true }
       );
@@ -66,7 +68,7 @@ module.exports = {
   },
 
 
-  // Delete a student and remove them from the course
+  // Delete a thought
   async deleteThought(req, res) {
     try {
       const thought = await Thought.findOneAndRemove({ _id: req.params.thoughtId });
@@ -75,26 +77,15 @@ module.exports = {
         return res.status(404).json({ message: 'No such thought exists' });
       }
 
-      const user = await User.findOneAndUpdate(
-        { thoughts: req.params.thoughtId },
-        { $pull: { thoughts: req.params.thoughtId } },
-        { new: true }
-      );
-
-      if (!user) {
-        return res.status(404).json({
-          message: 'thought deleted, but no user found',
-        });
-      }
 
       res.json({ message: 'Thought successfully deleted' });
     } catch (err) {
-      console.log(err);
+      // console.log(err);
       res.status(500).json(err);
     }
   },
 
-  // Add an reaction to a student
+  // Add an reaction to a thought
   async addReaction(req, res) {
     console.log('You are adding an reaction');
     console.log(req.body);
@@ -114,10 +105,11 @@ module.exports = {
 
       res.json(thought);
     } catch (err) {
+      console.log(err)
       res.status(500).json(err);
     }
   },
-  // Remove reaction from a student
+  // Remove reaction from a thought
   async removeReaction(req, res) {
     try {
       const thought = await Thought.findOneAndUpdate(
